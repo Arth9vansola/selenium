@@ -3,12 +3,12 @@ from selenium.webdriver.common.by import By
 import time
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 
-
-driver = webdriver.Chrome() 
+chrome_options = Options()
+chrome_options.add_argument("--incognito")
+driver = webdriver.Chrome(options=chrome_options) 
 driver.maximize_window()
-
-
 
 driver.get("https://www.saucedemo.com/")
 driver.find_element(By.ID, "user-name").send_keys("standard_user")
