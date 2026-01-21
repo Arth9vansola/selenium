@@ -1,0 +1,1 @@
+driver.implicitly_wait(10)  # Set implicit wait time to 10 seconds means it will wait for elements to appear for up to 10 seconds or max to max 10 seconds it will wait for that element
