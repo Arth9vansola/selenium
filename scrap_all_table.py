@@ -5,7 +5,7 @@ import pandas as pd
 import time
 
 class ScrapperTable:
-    def __init__(self,driver,table_xpath,site,table_name,btn_xpath=''):
+    def __init__(self,driver,table_xpath='', site='',table_name='',btn_xpath=''):
         self.driver = driver
         self.table_xpath = table_xpath
         self.site = site
@@ -69,21 +69,54 @@ class ScrapperTable:
             print("Error:", e)
 
         finally:
-            self.driver.quit()    
+            self.driver.quit()   
+
+    def the_check(self):
+        try:
+            self.driver.get(self.site)
+
+            check_box = self.driver.find_element(By.XPATH, self.table_xpath)
+            # self.driver.execute_script('arguments[0].scrollIntoView(true);',check_box)
+            self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});",check_box)
+
+            time.sleep(1)      
+            self.driver.execute_script("arguments[0].click();", check_box)
+         
+            # check_box.click()
+            time.sleep(5)
+            
+
+        except Exception as e:
+            print("Error:", e)
+
+        finally:
+            self.driver.quit() 
 
 
 if __name__ == "__main__":
     # options = Options()
     # options.add_argument("--headless=new")
     # driver = webdriver.Chrome(options=options)
-    # table_xpath = "//table[contains(@id,'tablepress-')]"
     driver = webdriver.Chrome()
-    table_xpath = "//table[contains(@id,'resultTable')]"
     site = "https://selectorshub.com/xpath-practice-page/"
     table_name = "scraped_data_all.xlsx"
+
+    ''' 1. to scrap for single table'''
+
+    # table_xpath = "//table[contains(@id,'resultTable')]"
+    # obj_scrapperTable = ScrapperTable(driver,table_xpath,site,table_name)
+    # obj_scrapperTable.scrapping_table()
+
+
+    ''' 2. to scrap for multiple table '''
+
     # btn_xpath = "//button[contains(@class,'next')]"
-    obj_scrapperTable = ScrapperTable(driver,table_xpath,site,table_name)
-    obj_scrapperTable.scrapping_table()
-    # xpath = "//td[text()='Garry White']/preceding-sibling::td//input"
+    # table_xpath = "//table[contains(@id,'tablepress-')]"
+    # obj_scrapperTable = ScrapperTable(driver,table_xpath,site,table_name,btn_xpath)
+    # obj_scrapperTable.scrapping_table()
+
+    ''' 3. to check the box '''
+    xpath = "//td[text()='Garry White']/preceding-sibling::td//input"
     # xpath = "//tr[td[text()='Garry White']]//input[@type='checkbox']"
-    # obj_scrapper.the_check(xpath)
+    obj_scrapperTable = ScrapperTable(driver,xpath, site)
+    obj_scrapperTable.the_check()
